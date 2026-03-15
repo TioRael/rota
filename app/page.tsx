@@ -4,6 +4,7 @@
 
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import RotaRunner from '@/components/RotaRunner';
 
 export const metadata: Metadata = {
   title: 'ROTA — Descubra o Brasil',
@@ -101,6 +102,7 @@ function CardRota({ nome, regiao, duracao, categoria, avaliacao, avaliacoes, pre
         </div>
         <p className="card-rota-desc">{descricao}</p>
         <div className="card-rota-footer">
+          
           <div className="card-rota-meta">
             <span>⏱ {duracao}</span>
             <span>⭐ {avaliacao} <span className="meta-count">({avaliacoes})</span></span>
@@ -108,8 +110,10 @@ function CardRota({ nome, regiao, duracao, categoria, avaliacao, avaliacoes, pre
           <Link href={`/rotas/${id}`} className="btn btn-primary btn-sm">
             Ver rota
           </Link>
+          
         </div>
       </div>
+      
     </div>
   );
 }
@@ -325,6 +329,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <RotaRunner />
     </>
   );
 }

@@ -1,7 +1,4 @@
-// app/layout.tsx (v2 — com SessionProvider do NextAuth)
-// Envolve a aplicação com o AuthSessionProvider para que
-// useSession() funcione em qualquer Client Component.
-
+// app/layout.tsx — com SessionProvider, favicon SVG e fonte Google
 import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
@@ -18,13 +15,13 @@ export const metadata: Metadata = {
     'Conectamos turistas, empresas de turismo, hotéis e restaurantes em uma só plataforma.',
   keywords: ['turismo', 'Brasil', 'rotas', 'hotéis', 'viagem', 'ROTA'],
   authors: [{ name: 'Israel Menezes', url: 'https://github.com/TioRael' }],
+  icons: {
+    icon:     '/favicon.svg',
+    shortcut: '/favicon.svg',
+  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <head>
@@ -32,10 +29,6 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
-        {/*
-          AuthSessionProvider precisa envolver toda a árvore
-          para que useSession() funcione nos Client Components (Navbar, etc.)
-        */}
         <AuthSessionProvider>
           <Navbar />
           <main>{children}</main>
