@@ -1,7 +1,4 @@
-// components/Footer.tsx
-// Footer global — sem event handlers inline (compatível com Server Components)
-// Hovers via classes CSS definidas no globals.css
-
+// components/Footer.tsx — links corrigidos para paginas existentes
 import Link from 'next/link';
 
 const COLUNAS = [
@@ -11,25 +8,34 @@ const COLUNAS = [
       { href: '/rotas',        label: 'Rotas Turísticas'  },
       { href: '/hoteis',       label: 'Hotéis & Pousadas' },
       { href: '/restaurantes', label: 'Restaurantes'      },
-      { href: '/regioes',      label: 'Regiões do Brasil' },
+      { href: '/sobre',        label: 'Sobre o ROTA'      },
     ],
   },
   {
     titulo: 'Para Empresas',
     links: [
-      { href: '/empresas',         label: 'Cadastre sua Empresa' },
-      { href: '/empresas/rotas',   label: 'Gerenciar Rotas'      },
-      { href: '/empresas/guias',   label: 'Cadastrar Guias'      },
-      { href: '/empresas/pricing', label: 'Planos'               },
+      { href: '/empresas',      label: 'Cadastre sua Empresa' },
+      { href: '/auth/cadastro', label: 'Criar conta empresa'  },
+      { href: '/dashboard',     label: 'Painel da empresa'    },
+      { href: '/contato',       label: 'Falar com a equipe'   },
     ],
   },
   {
     titulo: 'Conta',
     links: [
       { href: '/auth/cadastro', label: 'Criar Conta'    },
-      { href: '/auth/login',    label: 'Entrar'          },
-      { href: '/dashboard',     label: 'Painel'          },
-      { href: '/reservas',      label: 'Minhas Reservas' },
+      { href: '/auth/login',    label: 'Entrar'         },
+      { href: '/dashboard',     label: 'Meu Painel'     },
+      { href: '/perfil',        label: 'Meu Perfil'     },
+    ],
+  },
+  {
+    titulo: 'Legal',
+    links: [
+      { href: '/privacidade', label: 'Privacidade' },
+      { href: '/termos',      label: 'Termos de Uso' },
+      { href: '/contato',     label: 'Contato'      },
+      { href: '/sobre',       label: 'Nossa equipe' },
     ],
   },
 ];
@@ -44,15 +50,12 @@ function IconGithub() {
 
 export default function Footer() {
   const anoAtual = new Date().getFullYear();
-
   return (
     <footer className="footer">
       <div className="container">
-
-        {/* Grid principal */}
         <div className="footer-grid">
 
-          {/* Coluna da marca */}
+          {/* Marca */}
           <div>
             <Link href="/" className="footer-logo">
               <span className="footer-logo-icone">
@@ -65,20 +68,13 @@ export default function Footer() {
               </span>
               <span className="footer-logo-texto">ROTA</span>
             </Link>
-
             <p className="footer-descricao">
               Descubra o Brasil de um jeito novo. Rotas incríveis, hotéis selecionados
               e restaurantes autênticos — tudo em um só lugar.
             </p>
-
             <div className="footer-social">
-              <a
-                href="https://github.com/TioRael"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="footer-social-link"
-                aria-label="GitHub"
-              >
+              <a href="https://github.com/TioRael" target="_blank" rel="noopener noreferrer"
+                className="footer-social-link" aria-label="GitHub">
                 <IconGithub />
               </a>
             </div>
@@ -102,15 +98,15 @@ export default function Footer() {
         {/* Rodapé inferior */}
         <div className="footer-bottom">
           <p className="footer-copyright">
-            © {anoAtual} ROTA — Registro Organizado de Trajetos e Acomodações.
-            Projeto acadêmico desenvolvido por{' '}
-            <a href="https://github.com/TioRael" target="_blank" rel="noopener noreferrer" className="footer-copyright-link">
-              Israel Menezes
-            </a>.
+            © {anoAtual} ROTA — Projeto acadêmico ADS Módulo 5 por{' '}
+            <a href="https://github.com/TioRael" target="_blank" rel="noopener noreferrer"
+              className="footer-copyright-link">Israel Menezes</a>,{' '}
+            Felipe e Roberta.
           </p>
           <div className="footer-bottom-links">
             <Link href="/privacidade" className="footer-bottom-link">Privacidade</Link>
             <Link href="/termos"      className="footer-bottom-link">Termos</Link>
+            <Link href="/sobre"       className="footer-bottom-link">Sobre</Link>
           </div>
         </div>
       </div>

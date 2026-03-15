@@ -1,7 +1,6 @@
 'use client';
 // components/Navbar.tsx
-// CORRIGIDO: useEffect de pathname usando startTransition para evitar
-// o warning react-hooks/set-state-in-effect (setState síncrono em effect).
+// ATUALIZADO: icone do logo substituido pelo R estilizado (mesmo design do favicon)
 
 import { useState, useEffect, useTransition } from 'react';
 import { useSession, signOut } from 'next-auth/react';
@@ -27,25 +26,51 @@ function IconMenu({ open }: { open: boolean }) {
   );
 }
 
+// Icone R estilizado — mesmo design do favicon.svg mas como componente inline
+function IconRota({ fundo }: { fundo: boolean }) {
+  return (
+    <span style={{
+      width: '38px', height: '38px',
+      background: 'var(--laranja-manga)',
+      borderRadius: '10px',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      boxShadow: fundo ? 'var(--sombra-laranja)' : '0 2px 12px rgba(255,107,26,0.4)',
+      flexShrink: 0,
+      transition: 'box-shadow 0.3s ease',
+    }}>
+      <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+        {/* Letra R */}
+        <text
+          x="7"
+          y="24"
+          fontFamily="'Segoe UI', 'Arial Black', Arial, sans-serif"
+          fontSize="22"
+          fontWeight="900"
+          fill="white"
+          letterSpacing="-1"
+        >R</text>
+        {/* Ponto de bussola decorativo */}
+        <circle cx="26" cy="26" r="3"   fill="white" opacity="0.3"/>
+        <circle cx="26" cy="26" r="1.5" fill="white" opacity="0.75"/>
+      </svg>
+    </span>
+  );
+}
+
 export default function Navbar() {
-  const [menuAberto,         setMenuAberto]         = useState(false);
-  const [menuUsuarioAberto,  setMenuUsuarioAberto]  = useState(false);
-  const [scrollado,          setScrollado]          = useState(false);
+  const [menuAberto,        setMenuAberto]        = useState(false);
+  const [menuUsuarioAberto, setMenuUsuarioAberto] = useState(false);
+  const [scrollado,         setScrollado]         = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
-
-  // startTransition marca o setState como não-urgente,
-  // evitando o warning de setState síncrono dentro de effect.
   const [, startTransition] = useTransition();
 
-  // Detecta scroll para fundo sólido na navbar
   useEffect(() => {
     const onScroll = () => setScrollado(window.scrollY > 20);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Fecha menus ao navegar — setState via startTransition
   useEffect(() => {
     startTransition(() => {
       setMenuAberto(false);
@@ -72,15 +97,12 @@ export default function Navbar() {
 
           {/* Logo */}
           <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <span style={{ width: '38px', height: '38px', background: 'var(--laranja-manga)', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--sombra-laranja)', flexShrink: 0 }}>
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="9" stroke="white" strokeWidth="1.8"/>
-                <circle cx="12" cy="12" r="2" fill="white"/>
-                <path d="M12 3v2M12 19v2M3 12h2M19 12h2" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-                <path d="M9 9l6 3-3 6-6-3z" fill="white" opacity="0.9"/>
-              </svg>
-            </span>
-            <span style={{ fontFamily: 'var(--fonte-display)', fontWeight: 800, fontSize: '1.5rem', color: fundo ? 'var(--texto-principal)' : 'white', letterSpacing: '-0.02em' }}>
+            <IconRota fundo={fundo} />
+            <span style={{
+              fontFamily: 'var(--fonte-display)', fontWeight: 800, fontSize: '1.5rem',
+              color: fundo ? 'var(--texto-principal)' : 'white',
+              letterSpacing: '-0.02em',
+            }}>
               ROTA
             </span>
           </Link>
@@ -104,15 +126,13 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Área de usuário desktop */}
+          {/* Area de usuario desktop */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }} className="nav-actions-desktop">
 
-            {/* Carregando sessão */}
             {status === 'loading' && (
               <div style={{ width: '80px', height: '36px', background: 'rgba(128,128,128,0.15)', borderRadius: 'var(--radius-full)' }} />
             )}
 
-            {/* Deslogado */}
             {status === 'unauthenticated' && (
               <>
                 <Link href="/auth/login" style={{ fontFamily: 'var(--fonte-corpo)', fontWeight: 700, fontSize: '0.9rem', color: corTexto, textDecoration: 'none', padding: '0.5rem 1rem', transition: 'color var(--transicao)' }}>
@@ -124,7 +144,6 @@ export default function Navbar() {
               </>
             )}
 
-            {/* Logado */}
             {status === 'authenticated' && session && (
               <div style={{ position: 'relative' }}>
                 <button
@@ -146,7 +165,6 @@ export default function Navbar() {
                   <span style={{ fontSize: '0.65rem', opacity: 0.7 }}>▼</span>
                 </button>
 
-                {/* Dropdown do usuário */}
                 {menuUsuarioAberto && (
                   <div style={{
                     position: 'absolute', top: 'calc(100% + 8px)', right: 0,
@@ -160,18 +178,15 @@ export default function Navbar() {
                     </div>
                     {[
                       { href: '/dashboard', label: '🏠 Painel'          },
-                      { href: '/reservas',  label: '📅 Minhas Reservas' },
                       { href: '/perfil',    label: '👤 Meu Perfil'      },
+                      ...(session.user.tipo === 'ADMIN' ? [{ href: '/admin', label: '⚙️ Admin' }] : []),
                     ].map(({ href, label }) => (
                       <Link key={href} href={href} className="nav-dropdown-link">
                         {label}
                       </Link>
                     ))}
                     <div style={{ borderTop: '1px solid var(--cinza-borda)' }}>
-                      <button
-                        onClick={() => signOut({ callbackUrl: '/' })}
-                        className="nav-dropdown-sair"
-                      >
+                      <button onClick={() => signOut({ callbackUrl: '/' })} className="nav-dropdown-sair">
                         🚪 Sair
                       </button>
                     </div>
@@ -181,7 +196,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Hambúrguer mobile */}
+          {/* Hamburguer mobile */}
           <button
             onClick={() => setMenuAberto(!menuAberto)}
             className="nav-hamburger"
@@ -229,25 +244,16 @@ export default function Navbar() {
           .nav-hamburger       { display: flex !important; }
         }
         .nav-dropdown-link {
-          display: block;
-          padding: 0.65rem 1rem;
-          font-size: 0.88rem;
-          color: var(--texto-principal);
-          text-decoration: none;
+          display: block; padding: 0.65rem 1rem; font-size: 0.88rem;
+          color: var(--texto-principal); text-decoration: none;
           transition: background var(--transicao);
         }
         .nav-dropdown-link:hover { background: var(--creme-medio); }
         .nav-dropdown-sair {
-          display: block;
-          width: 100%;
-          text-align: left;
-          padding: 0.65rem 1rem;
-          font-size: 0.88rem;
-          color: #B91C1C;
-          background: none;
-          border: none;
-          cursor: pointer;
-          font-family: var(--fonte-corpo);
+          display: block; width: 100%; text-align: left;
+          padding: 0.65rem 1rem; font-size: 0.88rem;
+          color: #B91C1C; background: none; border: none;
+          cursor: pointer; font-family: var(--fonte-corpo);
           transition: background var(--transicao);
         }
         .nav-dropdown-sair:hover { background: #FEF2F2; }

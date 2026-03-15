@@ -8,6 +8,7 @@ import { useState, useEffect, useCallback, useTransition } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import Card3D from '@/components/Card3D';
 
 interface Restaurante {
   ID_RESTAURANTE: number; NOME: string; TIPO: string | null;
@@ -175,7 +176,9 @@ export default function RestaurantesContent() {
                 ))}
               </div>
             ) : restaurantes.length > 0 ? (
-              <div className="rest-grade">{restaurantes.map(r => <CardRestaurante key={r.ID_RESTAURANTE} r={r} />)}</div>
+              <div className="rest-grade">{restaurantes.map(r => <Card3D key={r.ID_RESTAURANTE}>
+  <CardRestaurante r={r} />
+</Card3D>)}</div>
             ) : (
               <div style={{ textAlign: 'center', padding: '4rem 1rem', color: 'var(--texto-suave)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
                 <p style={{ fontSize: '3rem' }}>🍽️</p>

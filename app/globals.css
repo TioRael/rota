@@ -781,3 +781,516 @@ a:hover { color: var(--azul-turquesa-hover); }
 @media (min-width: 1024px) {
   .footer-grid { grid-template-columns: 1.6fr 1fr 1fr 1fr !important; }
 }
+
+/* ============================================================
+   Card3D — Efeito hover 3D/tilt
+   Adicione este bloco ao final do globals.css
+   ============================================================ */
+
+/* Wrapper: define o contexto de perspectiva */
+.card3d-wrap {
+  perspective: 900px;
+  cursor: pointer;
+}
+
+/* Zoom suave na imagem interna ao hover */
+.card3d-wrap:hover .card-rota-imagem img,
+.card3d-wrap:hover .hotel-card-img img,
+.card3d-wrap:hover .rest-card-img img {
+  transform: scale(1.06);
+}
+
+/* Garante que imagens dentro dos cards tenham transition */
+.card-rota-imagem img,
+.hotel-card-img img,
+.rest-card-img img {
+  transition: transform 0.4s ease;
+}
+
+/* Remove o hover padrao dos cards quando envoltos pelo Card3D
+   (o 3D ja cuida do efeito visual) */
+.card3d-wrap .card:hover,
+.card3d-wrap .hotel-card:hover,
+.card3d-wrap .rest-card:hover,
+.card3d-wrap .rota-card:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+/* ============================================================
+   HeroSlideshow — adicione ao final do globals.css
+   ============================================================ */
+
+/* Container principal */
+.hero-slideshow {
+  position: relative;
+  min-height: 100vh;
+  max-height: 100vh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: #1A1A1A;
+}
+
+/* Pilha de slides */
+.hs-slides {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hs-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.4s ease-in-out;
+}
+.hs-slide-ativo { opacity: 1; }
+.hs-slide-transitando { opacity: 0; }
+
+/* Overlay escuro sobre a imagem — mais pesado na esquerda
+   para o texto ficar legível sem perder a foto no lado direito */
+.hs-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    rgba(0,0,0,0.75) 0%,
+    rgba(0,0,0,0.45) 45%,
+    rgba(0,0,0,0.15) 70%,
+    rgba(0,0,0,0.08) 100%
+  );
+}
+
+/* Barra de progresso no topo */
+.hs-progress-track {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: rgba(255,255,255,0.15);
+  z-index: 20;
+}
+.hs-progress-bar {
+  height: 100%;
+  background: var(--laranja-manga);
+  transition: width 0.1s linear;
+}
+
+/* Conteudo sobreposto */
+.hs-conteudo {
+  position: relative;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding-top: 5rem;
+  padding-bottom: 8rem;
+}
+@media(min-width: 1024px) {
+  .hs-conteudo { grid-template-columns: 1fr 360px; }
+}
+
+/* Texto do hero — reaproveita classes existentes */
+.hs-texto { max-width: 580px; }
+
+/* Card da rota atual (lado direito) */
+.hs-card-rota {
+  display: none;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: rgba(255,255,255,0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.14);
+  border-radius: var(--radius-xl);
+  padding: 1.75rem;
+  text-decoration: none;
+  color: white;
+  transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+}
+@media(min-width: 1024px) { .hs-card-rota { display: flex; } }
+.hs-card-rota:hover { background: rgba(255,255,255,0.13); transform: translateY(-3px); }
+
+.hs-card-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--laranja-manga);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.25rem;
+}
+.hs-card-titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
+}
+.hs-card-local {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.65);
+}
+.hs-card-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.83rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 0.5rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.hs-card-cta {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--laranja-manga);
+}
+
+/* Setas de navegacao */
+.hs-seta {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 15;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+}
+.hs-seta:hover { background: rgba(255,255,255,0.22); transform: translateY(-50%) scale(1.1); }
+.hs-seta-esq { left: 1.25rem; }
+.hs-seta-dir { right: 1.25rem; }
+/* Esconde setas no mobile para nao atrapalhar o swipe */
+@media(max-width: 640px) { .hs-seta { display: none; } }
+
+/* Rodapé com nome da rota e dots */
+.hs-rodape {
+  position: absolute;
+  bottom: 4.5rem;  /* acima da onda */
+  left: 0;
+  right: 0;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 calc(var(--container-padding, 1.5rem) + 1rem);
+}
+
+.hs-slide-info { display: flex; flex-direction: column; gap: 0.1rem; }
+.hs-slide-nome  { font-size: 0.88rem; font-weight: 700; color: rgba(255,255,255,0.85); }
+.hs-slide-local { font-size: 0.75rem; color: rgba(255,255,255,0.5); }
+
+/* Dots */
+.hs-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.hs-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.3);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: width 0.3s ease, background 0.3s ease;
+}
+.hs-dot-ativo {
+  width: 28px;
+  background: var(--laranja-manga);
+}
+
+/* Esconde o hero-section original quando o slideshow estiver presente */
+.has-slideshow .hero-section { display: none; }
+
+/* ============================================================
+   MapaBrasil — adicione ao final do globals.css
+   ============================================================ */
+
+/* Layout principal */
+.mapa-section { width: 100%; }
+.mapa-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+@media(min-width: 900px) {
+  .mapa-layout { grid-template-columns: 1fr 300px; }
+}
+@media(min-width: 1100px) {
+  .mapa-layout { grid-template-columns: 1fr 340px; }
+}
+
+/* Container do SVG */
+.mapa-svg-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.mapa-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  max-height: 520px;
+}
+
+/* Estados */
+.mapa-estado {
+  fill: #E8F5E9;
+  stroke: var(--branco-puro);
+  stroke-width: 1.5px;
+  cursor: pointer;
+  transition: fill 0.18s ease, opacity 0.18s ease;
+}
+.mapa-estado:hover {
+  fill: #FF6B1A;
+  opacity: 0.8;
+}
+.mapa-estado-com-rota {
+  fill: #A5D6A7;
+}
+.mapa-estado-com-rota:hover {
+  fill: #FF6B1A;
+  opacity: 0.85;
+}
+.mapa-estado-ativo {
+  fill: #FF6B1A !important;
+  opacity: 1 !important;
+  stroke: #CC5000;
+  stroke-width: 2px;
+}
+
+/* Legenda */
+.mapa-legenda {
+  display: flex;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.mapa-leg-item {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+}
+.mapa-leg-cor {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.mapa-leg-cor-rota   { background: #A5D6A7; }
+.mapa-leg-cor-ativo  { background: #FF6B1A; }
+.mapa-leg-cor-vazio  { background: #E8F5E9; border: 1px solid var(--cinza-borda); }
+
+/* Loading */
+.mapa-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  height: 300px;
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+}
+.mapa-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--cinza-borda);
+  border-top-color: var(--laranja-manga);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Painel lateral */
+.mapa-painel {
+  background: var(--branco-puro);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--sombra-md);
+  overflow: hidden;
+  position: sticky;
+  top: 86px;
+  max-height: calc(100vh - 110px);
+  overflow-y: auto;
+}
+
+/* Estado idle (sem seleção) */
+.mapa-painel-idle {
+  padding: 2rem 1.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+.mapa-painel-idle-icone { font-size: 3rem; }
+.mapa-painel-idle-titulo {
+  font-family: var(--fonte-display);
+  font-size: 1.25rem;
+  margin: 0;
+}
+.mapa-painel-idle-sub {
+  font-size: 0.88rem;
+  color: var(--texto-suave);
+  line-height: 1.6;
+  margin: 0;
+}
+.mapa-painel-resumo {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+  padding: 1rem 1.5rem;
+  background: var(--creme-medio);
+  border-radius: var(--radius-lg);
+  width: 100%;
+}
+.mapa-resumo-item { text-align: center; flex: 1; }
+.mapa-resumo-num {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: 1.75rem;
+  color: var(--laranja-manga);
+  margin: 0;
+}
+.mapa-resumo-label {
+  font-size: 0.75rem;
+  color: var(--texto-suave);
+  margin: 0;
+}
+.mapa-resumo-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--cinza-borda);
+}
+
+/* Estado ativo (com seleção) */
+.mapa-painel-ativo {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.mapa-painel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, #FF6B1A 0%, #E55A0F 100%);
+}
+.mapa-painel-uf {
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: rgba(255,255,255,0.65);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 0.15rem;
+}
+.mapa-painel-nome {
+  font-family: var(--fonte-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: white;
+  margin: 0;
+}
+.mapa-painel-contagem { text-align: center; }
+.mapa-painel-contagem-num {
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: 2rem;
+  color: white;
+  margin: 0;
+  line-height: 1;
+}
+.mapa-painel-contagem-label {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+}
+
+/* Lista de rotas */
+.mapa-rotas-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.75rem;
+}
+.mapa-rota-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.85rem;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--cinza-borda);
+  text-decoration: none;
+  color: var(--texto-principal);
+  transition: border-color 0.15s, background 0.15s;
+  margin-bottom: 0.5rem;
+}
+.mapa-rota-card:hover {
+  border-color: var(--laranja-manga);
+  background: var(--laranja-manga-light);
+}
+.mapa-rota-topo {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+.mapa-rota-emoji { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+.mapa-rota-nome  { font-weight: 700; font-size: 0.88rem; line-height: 1.3; margin: 0; }
+.mapa-rota-local { font-size: 0.75rem; color: var(--texto-suave); margin: 0; }
+.mapa-rota-nota  { font-size: 0.78rem; color: var(--texto-suave); white-space: nowrap; flex-shrink: 0; }
+.mapa-rota-rodape {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+  padding-top: 0.35rem;
+  border-top: 1px solid var(--cinza-borda);
+}
+.mapa-rota-preco { color: var(--laranja-manga); font-weight: 700; }
+
+/* Sem rotas */
+.mapa-sem-rotas {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: var(--texto-suave);
+  font-size: 0.88rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+}
+.mapa-sem-rotas p:first-child { font-size: 2rem; }
+
+/* Botão ver todas */
+.mapa-btn-ver-todas {
+  display: block;
+  width: 100%;
+  padding: 0.85rem;
+  background: none;
+  border: none;
+  border-top: 1px solid var(--cinza-borda);
+  font-family: var(--fonte-corpo);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--laranja-manga);
+  cursor: pointer;
+  transition: background 0.15s;
+  text-align: center;
+}
+.mapa-btn-ver-todas:hover { background: var(--laranja-manga-light); }

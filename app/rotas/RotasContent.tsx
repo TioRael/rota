@@ -6,6 +6,7 @@ import { useState, useEffect, useCallback, useTransition } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams, useRouter, usePathname } from 'next/navigation';
+import Card3D from '@/components/Card3D';
 // ─── Tipos ────────────────────────────────────────────────────
 interface Rota {
   ID_ROTA:         number;
@@ -306,7 +307,9 @@ export default function RotasContent() {
               </div>
             ) : rotas.length > 0 ? (
               <div className="rotas-grade">
-                {rotas.map(rota => <CardRota key={rota.ID_ROTA} rota={rota} />)}
+                {rotas.map(rota => <Card3D key={rota.ID_ROTA}>
+  <CardRota rota={rota} />
+</Card3D>)}
               </div>
             ) : (
               <div className="rotas-vazio">

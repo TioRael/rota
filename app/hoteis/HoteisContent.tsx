@@ -150,7 +150,7 @@ export default function HoteisContent() {
             Hotéis & Pousadas 🏨
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: '0.9rem', marginBottom: '1.5rem' }}>
-            {paginacao ? `${paginacao.total} acomodação${paginacao.total !== 1 ? 'ões' : ''} disponível${paginacao.total !== 1 ? 'is' : ''}` : 'Carregando...'}
+            {paginacao ? `${paginacao.total} ${paginacao.total !== 1 ? 'acomodações' : 'acomodação'} ${paginacao.total !== 1 ? 'disponíveis' : 'disponível'}` : 'Carregando...'}
           </p>
           <div style={{ position: 'relative', maxWidth: '560px' }}>
             <span style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)' }}>🔍</span>
